@@ -134,5 +134,75 @@ ALTER TABLE Employees DROP COLUMN PhoneNumber;
         },
       ],
     },
+    {
+      heading: "Assignment/Practice Questions: Create Database, Table & Insert Data",
+      content: "All three sets use a fresh scenario (a Library database) so students aren't just copying the lesson's Employees example.",
+      subsections: [
+        {
+          title: "Q1. Create a new database called LibraryDB.",
+          answer: `CREATE DATABASE LibraryDB;`,
+        },
+        {
+          title: "Q3. Create a table called Books with the following columns:",
+          answer: `USE LibraryDB;`,
+        },
+        {
+          title: "Q3. Display Title and Price, renaming Price to 'Book Price' in the output.",
+          bullets: [
+            "**BookID**: auto-incrementing primary key",
+            "**Title**: text, up to 100 characters, required",
+            "**Author**: text, up to 100 characters",
+            "**Genre**: text, up to 50 characters",
+            "**Price**: decimal with 2 decimal places, defaults to 0",
+            "**PublishedDate**: date",
+            "**IsAvailable**: bit, defaults to 1",
+          ],
+          answer: `CREATE TABLE Books (
+    BookID         INT           PRIMARY KEY IDENTITY(1,1),
+    Title          VARCHAR(100)  NOT NULL,
+    Author         VARCHAR(100),
+    Genre          VARCHAR(50),
+    Price          DECIMAL(8,2)  DEFAULT 0.00,
+    PublishedDate  DATE,
+    IsAvailable    BIT           DEFAULT 1
+);`,
+        },
+        {
+          title: "Q4. Insert one book of your choice into the Books table, filling in every column.",
+          answer: `INSERT INTO Books (Title, Author, Genre, Price, PublishedDate, IsAvailable)
+VALUES ('The Silent Patient', 'Alex Michaelides', 'Thriller', 399.00, '2019-02-05', 1);`,
+        },
+        {
+          title: "Q5. Insert the following four books in a single INSERT statement:",
+          table: {
+            headers: ["Title", "Author", "Genre", "Price", "PublishedDate"],
+            rows: [
+              ["The Hobbit", "J.R.R. Tolkien", "Fantasy", "350.00", "1937-09-21"],
+              ["Sapiens", "Yuval Noah Harari", "Non-Fiction", "499.00", "2011-01-01"],
+              ["The Da Vinci Code", "Dan Brown", "Mystery", "299.00", "2003-03-18"],
+              ["Atomic Habits", "James Clear", "Self-Help", "450.00", "2018-10-16"],
+            ],
+          },
+          answer: `INSERT INTO Books (Title, Author, Genre, Price, PublishedDate)
+VALUES
+    ('The Hobbit', 'J.R.R. Tolkien', 'Fantasy', 350.00, '1937-09-21'),
+    ('Sapiens', 'Yuval Noah Harari', 'Non-Fiction', 499.00, '2011-01-01'),
+    ('The Da Vinci Code', 'Dan Brown', 'Mystery', 299.00, '2003-03-18'),
+    ('Atomic Habits', 'James Clear', 'Self-Help', 450.00, '2018-10-16');`,
+        },
+        {
+          title: "Q6. Add a new column Publisher (text, up to 100 characters) to the Books table.",
+          answer: `ALTER TABLE Books ADD Publisher VARCHAR(100);`,
+        },
+        {
+          title: "Q7. Write a query to display every row and column in the Books table",
+          answer: `SELECT * FROM Books;`,
+        },
+        {
+          title: "Q8. You decide you no longer need the Publisher column. Remove it.",
+          answer: `ALTER TABLE Books DROP COLUMN Publisher;`,
+        },
+      ],
+    },
   ],
 }

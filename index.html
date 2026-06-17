@@ -151,6 +151,53 @@ const renderBullet = (text) => {
   return parts.map((p, i) => i % 2 === 1 ? <strong key={i} style={{ color: "#e2e8f0" }}>{p}</strong> : p);
 };
 
+/* Change this PIN to whatever you want students/viewers to enter
+   before an answer is revealed. */
+const PRACTICE_PIN = "1234";
+
+const AnswerReveal = ({ code }) => {
+  const [revealed, setRevealed] = useState(false);
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (pin === PRACTICE_PIN) {
+      setRevealed(true);
+      setError(false);
+    } else {
+      setError(true);
+    }
+  };
+
+  if (revealed) {
+    return <CodeBlock code={code} />;
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ marginTop: "12px", display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+      <input
+        type="password"
+        inputMode="numeric"
+        placeholder="Enter PIN"
+        value={pin}
+        onChange={(e) => { setPin(e.target.value); setError(false); }}
+        style={{
+          background: "#0d1117", border: `1px solid ${error ? "#f87171" : "#30363d"}`,
+          color: "#e6edf3", padding: "8px 12px", borderRadius: "6px",
+          fontSize: "13px", fontFamily: "inherit", width: "120px",
+        }}
+      />
+      <button type="submit" style={{
+        background: "#1d3461", border: "1px solid #3b82f6", color: "#93c5fd",
+        padding: "8px 14px", borderRadius: "6px", fontSize: "13px",
+        cursor: "pointer", fontFamily: "inherit",
+      }}>🔒 Reveal Answer</button>
+      {error && <span style={{ color: "#f87171", fontSize: "12px" }}>Incorrect PIN</span>}
+    </form>
+  );
+};
+
 function App() {
   const [course, setCourse] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -330,6 +377,7 @@ function App() {
                         </h4>
 
                         {sub.code && <CodeBlock code={sub.code} />}
+                        {sub.answer && <AnswerReveal code={sub.answer} />}
                         {sub.table && <DataTable headers={sub.table.headers} rows={sub.table.rows} />}
 
                         {sub.bullets && (

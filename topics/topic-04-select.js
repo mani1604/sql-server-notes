@@ -90,27 +90,27 @@ WHERE IsActive = 1 AND HireDate > '2022-01-01';`,
       ],
     },
     {
-      heading: "Practice Questions: Basic SELECT",
+      heading: "Assignment/Practice Questions: Basic SELECT query",
       content: "These questions use a Books table (BookID, Title, Author, Genre, Price, PublishedDate, IsAvailable) instead of Employees, so you apply the concept rather than copy the example.",
       subsections: [
         {
           title: "Q1. Display all columns and rows from the Books table.",
-          code: `SELECT * FROM Books;`,
+          answer: `SELECT * FROM Books;`,
         },
         {
           title: "Q2. Display only the Title and Author columns.",
-          code: `SELECT Title, Author FROM Books;`,
+          answer: `SELECT Title, Author FROM Books;`,
         },
         {
           title: "Q3. Display Title and Price, renaming Price to 'Book Price' in the output.",
-          code: `SELECT 
+          answer: `SELECT 
     Title,
     Price AS [Book Price]
 FROM Books;`,
         },
         {
           title: "Q4. Display Title, Genre, and Price, renamed to 'Book Title', 'Category', and 'Cost'.",
-          code: `SELECT 
+          answer: `SELECT 
     Title AS [Book Title],
     Genre AS Category,
     Price AS Cost
@@ -118,7 +118,7 @@ FROM Books;`,
         },
         {
           title: "Q5. Display each Author once, without duplicates, even if they wrote multiple books.",
-          code: `SELECT DISTINCT Author FROM Books;`,
+          answer: `SELECT DISTINCT Author FROM Books;`,
         },
       ],
     },
@@ -128,40 +128,40 @@ FROM Books;`,
       subsections: [
         {
           title: "Q1. Find all books in the 'Fantasy' genre.",
-          code: `SELECT * FROM Books WHERE Genre = 'Fantasy';`,
+          answer: `SELECT * FROM Books WHERE Genre = 'Fantasy';`,
         },
         {
           title: "Q2. Find all books priced above 400.",
-          code: `SELECT * FROM Books WHERE Price > 400;`,
+          answer: `SELECT * FROM Books WHERE Price > 400;`,
         },
         {
           title: "Q3. Find all books priced between 300 and 500 (inclusive).",
-          code: `SELECT * FROM Books WHERE Price BETWEEN 300 AND 500;`,
+          answer: `SELECT * FROM Books WHERE Price BETWEEN 300 AND 500;`,
         },
         {
           title: "Q4. Find all books whose title starts with the word 'The'.",
-          code: `SELECT * FROM Books WHERE Title LIKE 'The%';`,
+          answer: `SELECT * FROM Books WHERE Title LIKE 'The%';`,
         },
         {
           title: "Q5. Find all books that are currently available and were published after January 1, 2015.",
-          code: `SELECT * FROM Books 
+          answer: `SELECT * FROM Books 
 WHERE IsAvailable = 1 AND PublishedDate > '2015-01-01';`,
         },
         {
           title: "Q6. Find all books that are NOT in the 'Fantasy' genre.",
-          code: `SELECT * FROM Books WHERE Genre <> 'Fantasy';`,
+          answer: `SELECT * FROM Books WHERE Genre <> 'Fantasy';`,
         },
         {
           title: "Q7. Find all books in either the 'Fantasy' or 'Mystery' genre, using IN.",
-          code: `SELECT * FROM Books WHERE Genre IN ('Fantasy', 'Mystery');`,
+          answer: `SELECT * FROM Books WHERE Genre IN ('Fantasy', 'Mystery');`,
         },
         {
           title: "Q8. Find all books where the Author column has not been filled in (is NULL).",
-          code: `SELECT * FROM Books WHERE Author IS NULL;`,
+          answer: `SELECT * FROM Books WHERE Author IS NULL;`,
         },
         {
           title: "Q9. Find all books priced above 300 that are also currently unavailable.",
-          code: `SELECT * FROM Books 
+          answer: `SELECT * FROM Books 
 WHERE Price > 300 AND IsAvailable = 0;`,
         },
       ],
