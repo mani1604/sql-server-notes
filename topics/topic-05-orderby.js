@@ -57,7 +57,7 @@ ORDER BY 3 DESC, 2 ASC;`,
       ],
     },
     {
-      heading: "Practice Questions: ORDER BY",
+      heading: "Assignment/Practice Questions: ORDER BY",
       content: "Continuing with the Books table — write a query for each scenario below.",
       subsections: [
         {
