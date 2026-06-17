@@ -9,7 +9,12 @@
       subsections: [
         {
           title: "ORDER BY Examples",
-          code: `-- Sort by salary descending (highest first)
+          code: `-- Sort by salary descending (highest first) - selecting all columns
+SELECT * 
+FROM Employees 
+ORDER BY Salary DESC;
+
+-- Sort by salary descending (highest first) - selecting only few columns
 SELECT FirstName, LastName, Salary 
 FROM Employees 
 ORDER BY Salary DESC;
