@@ -34,6 +34,8 @@ SELECT EmployeeID, Email, Hiredate
 FROM Employees 
 ORDER BY Hiredate ASC;
 
+-- Sort by data in order of hiring date (employee who hired last should be on top) and select only EmployeeID, Salary and HireDate
+
 -- Sort by department, then by last name
 SELECT FirstName, LastName, Department 
 FROM Employees 
