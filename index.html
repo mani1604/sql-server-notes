@@ -277,7 +277,7 @@ function App() {
             </div>
           </div>
           <p style={{ margin: "10px 0 0 0", color: "#64748b", fontSize: "14px" }}>
-            From zero to writing confident SQL queries — with real examples and explanations.
+            From zero to writing confident SQL queries - with real examples and explanations.
           </p>
         </div>
 
@@ -376,8 +376,8 @@ function App() {
                           {sub.title}
                         </h4>
 
-                        {sub.code && <CodeBlock code={sub.code} />}
                         {sub.table && <DataTable headers={sub.table.headers} rows={sub.table.rows} />}
+                        {sub.code && <CodeBlock code={sub.code} />}
                         {sub.answer && <AnswerReveal code={sub.answer} />}
 
                         {sub.bullets && (
