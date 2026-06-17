@@ -39,10 +39,15 @@ SELECT EmployeeID, Salary, Hiredate
 FROM Employees 
 ORDER BY Hiredate DESC;
 
--- Sort by department, then by last name
+-- Sort by department in ascending, then by last name by ascending
 SELECT FirstName, LastName, Department 
 FROM Employees 
 ORDER BY Department ASC, LastName ASC;
+
+-- Sort by department in ascending, then by last name by descending
+SELECT FirstName, LastName, Department 
+FROM Employees 
+ORDER BY Department ASC, LastName DESC;
 
 -- Order by column position (2nd and 3rd column)
 SELECT FirstName, LastName, Salary 
