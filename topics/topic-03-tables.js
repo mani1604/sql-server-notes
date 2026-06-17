@@ -67,11 +67,11 @@ CREATE TABLE Employees (
         {
           title: "Understanding Constraints",
           bullets: [
-            "**PRIMARY KEY** — Uniquely identifies each row; cannot be NULL",
-            "**IDENTITY(1,1)** — Auto-increments the value starting at 1, stepping by 1",
-            "**NOT NULL** — The column must always have a value",
-            "**UNIQUE** — All values in the column must be different",
-            "**DEFAULT** — Value used when none is provided on insert",
+            "**PRIMARY KEY** - Uniquely identifies each row; cannot be NULL",
+            "**IDENTITY(1,1)** - Auto-increments the value starting at 1, stepping by 1",
+            "**NOT NULL** - The column must always have a value",
+            "**UNIQUE** - All values in the column must be different",
+            "**DEFAULT** - Value used when none is provided on insert",
           ],
         },
       ],
@@ -103,8 +103,8 @@ SELECT * FROM Employees;`,
         {
           title: "Insert Best Practices",
           bullets: [
-            "Always specify column names explicitly — don't rely on column order",
-            "Omit IDENTITY columns — SQL Server fills them automatically",
+            "Always specify column names explicitly - don't rely on column order",
+            "Omit IDENTITY columns - SQL Server fills them automatically",
             "Use single quotes for text and date values",
             "Inserting multiple rows in one statement is faster than multiple INSERT statements",
           ],
@@ -126,10 +126,10 @@ ALTER TABLE Employees ALTER COLUMN PhoneNumber VARCHAR(15);
 -- Drop a column
 ALTER TABLE Employees DROP COLUMN PhoneNumber;
 
--- Drop the entire table (careful — data is lost!)
+-- Drop the entire table (careful - data is lost!)
 -- DROP TABLE Employees;
 
--- Drop the database (careful — everything inside is lost!)
+-- Drop the database (careful - everything inside is lost!)
 -- DROP DATABASE CompanyDB;`,
         },
       ],

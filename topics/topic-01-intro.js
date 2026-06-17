@@ -12,8 +12,8 @@ SQL was first developed by IBM in the 1970s and became an ANSI/ISO standard in 1
         {
           title: "Why SQL Matters",
           bullets: [
-            "Universal language — works across MySQL, PostgreSQL, Oracle, SQL Server, and more",
-            "Declarative syntax — you describe *what* you want, not *how* to get it",
+            "Universal language: works across MySQL, PostgreSQL, Oracle, SQL Server, and more",
+            "Declarative syntax: you describe *what* you want, not *how* to get it",
             "Handles massive datasets with speed and efficiency",
             "Foundation for data analysis, reporting, backend development, and data engineering",
           ],
@@ -29,10 +29,10 @@ SQL Server uses T-SQL (Transact-SQL), Microsoft's extension of standard SQL, whi
         {
           title: "Popular SQL Server Editions",
           bullets: [
-            "**Express** — Free, limited to 10 GB storage. Great for learning & small apps",
-            "**Developer** — Free, full-featured, for development/testing only (not for production)",
-            "**Standard** — Paid, for mid-tier apps and databases",
-            "**Enterprise** — Paid, for mission-critical, large-scale production environments",
+            "**Express**: Free, limited to 10 GB storage. Great for learning & small apps",
+            "**Developer**: Free, full-featured, for development/testing only (not for production)",
+            "**Standard**: Paid, for mid-tier apps and databases",
+            "**Enterprise**: Paid, for mission-critical, large-scale production environments",
           ],
         },
       ],
@@ -59,10 +59,10 @@ SQL Server uses T-SQL (Transact-SQL), Microsoft's extension of standard SQL, whi
         {
           title: "Key SQL Command Categories",
           bullets: [
-            "**DDL (Data Definition Language)** — CREATE, ALTER, DROP (defines structure)",
-            "**DML (Data Manipulation Language)** — SELECT, INSERT, UPDATE, DELETE (manipulates data)",
-            "**DCL (Data Control Language)** — GRANT, REVOKE (controls permissions)",
-            "**TCL (Transaction Control Language)** — COMMIT, ROLLBACK, SAVEPOINT (manages transactions)",
+            "**DDL (Data Definition Language)**: CREATE, ALTER, DROP (defines structure)",
+            "**DML (Data Manipulation Language)**: SELECT, INSERT, UPDATE, DELETE (manipulates data)",
+            "**DCL (Data Control Language)**: GRANT, REVOKE (controls permissions)",
+            "**TCL (Transaction Control Language)**: COMMIT, ROLLBACK, SAVEPOINT (manages transactions)",
           ],
         },
       ],
