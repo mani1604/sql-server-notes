@@ -1,7 +1,7 @@
 {
   id: 5,
   title: "ORDER BY",
-  icon: "🔍",
+  icon: "📊",
   sections: [
     {
       heading: "ORDER BY: Used for Sorting Results",

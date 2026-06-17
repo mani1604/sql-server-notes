@@ -1,7 +1,7 @@
 {
   id: 6,
   title: "AGGREGATE Functions",
-  icon: "🔍",
+  icon: "🧮",
   sections: [
     {
       heading: "Aggregate Functions",

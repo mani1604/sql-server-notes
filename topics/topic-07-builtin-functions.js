@@ -1,7 +1,7 @@
 {
   id: 7,
   title: "BUILT-IN Functions",
-  icon: "🔍",
+  icon: "🛠️",
   sections: [
     {
       heading: "Useful Built-in Functions",
