@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Microsoft SQL Server — Complete Course</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #060b14; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+  .module-btn:hover { background: #1e293b !important; }
+  .module-btn.active { background: #1d3461 !important; border-color: #3b82f6 !important; }
+  .section-toggle:hover { background: #1a2744 !important; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState } = React;
+
+/* ============================================================
+   ADD NEW TOPICS HERE.
+   Each item in this array = one Module tab.
+   Copy an existing module object (the { id: ..., title: ..., ... }
+   block), paste it below the last one, change id/title/icon/sections,
+   and save. The new tab will appear automatically.
+   ============================================================ */
+const course = [
+  {
+    id: 1,
+    title: "Introduction to SQL & SQL Server",
+    icon: "🗄️",
+    sections: [
+      {
+        heading: "What is SQL?",
+        content: `SQL (Structured Query Language) is the standard language used to communicate with relational databases. It allows you to create, read, update, and delete data — commonly known as CRUD operations.
+
+SQL was first developed by IBM in the 1970s and became an ANSI/ISO standard in 1986. Today, virtually every relational database system uses SQL as its core language.`,
+        subsections: [
+          {
+            title: "Why SQL Matters",
+            bullets: [
+              "Universal language — works across MySQL, PostgreSQL, Oracle, SQL Server, and more",
+              "Declarative syntax — you describe *what* you want, not *how* to get it",
+              "Handles massive datasets with speed and efficiency",
+              "Foundation for data analysis, reporting, backend development, and data engineering",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "What is Microsoft SQL Server?",
+        content: `Microsoft SQL Server (often called MSSQL) is a Relational Database Management System (RDBMS) developed by Microsoft. It stores and retrieves data as requested by applications across a network.
+
+SQL Server uses T-SQL (Transact-SQL), Microsoft's extension of standard SQL, which adds procedural programming, local variables, error handling, and more.`,
+        subsections: [
+          {
+            title: "Popular SQL Server Editions",
+            bullets: [
+              "**Express** — Free, limited to 10 GB storage. Great for learning & small apps",
+              "**Developer** — Free, full-featured, for development/testing only (not for production)",
+              "**Standard** — Paid, for mid-tier apps and databases",
+              "**Enterprise** — Paid, for mission-critical, large-scale production environments",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Key Components of SQL Server",
+        content: "SQL Server is made up of several core components that work together to store, manage, and deliver data.",
+        subsections: [
+          {
+            title: "Core Components",
+            table: {
+              headers: ["Component", "Description"],
+              rows: [
+                ["Database Engine", "The core service for storing, processing, and securing data"],
+                ["SQL Server Management Studio (SSMS)", "GUI tool for managing SQL Server databases"],
+                ["T-SQL", "Microsoft's SQL dialect with procedural extensions"],
+                ["SQL Server Agent", "Automates administrative tasks and scheduled jobs"],
+                ["SQL Server Integration Services (SSIS)", "ETL tool for data migration and transformation"],
+                ["SQL Server Reporting Services (SSRS)", "Creates and delivers reports"],
+                ["SQL Server Analysis Services (SSAS)", "OLAP and data mining capabilities"],
+              ],
+            },
+          },
+          {
+            title: "Key SQL Command Categories",
+            bullets: [
+              "**DDL (Data Definition Language)** — CREATE, ALTER, DROP (defines structure)",
+              "**DML (Data Manipulation Language)** — SELECT, INSERT, UPDATE, DELETE (manipulates data)",
+              "**DCL (Data Control Language)** — GRANT, REVOKE (controls permissions)",
+              "**TCL (Transaction Control Language)** — COMMIT, ROLLBACK, SAVEPOINT (manages transactions)",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "Download & Installation",
+    icon: "⬇️",
+    sections: [
+      {
+        heading: "Step 1: Download SQL Server",
+        content: "We'll use SQL Server Developer Edition (free, full-featured for development).",
+        subsections: [
+          {
+            title: "Download Steps",
+            numbered: [
+              'Visit https://www.microsoft.com/en-us/sql-server/sql-server-downloads',
+              'Scroll to "Developer" edition and click **Download now**',
+              "Run the downloaded installer (SQLServer2022-DEV-x64-ENU.exe)",
+              'Choose **Basic** installation for a quick setup (recommended for beginners)',
+              "Accept the license terms and choose install location",
+              "Click **Install** and wait for completion (~5–10 minutes)",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Step 2: Download SQL Server Management Studio (SSMS)",
+        content: "SSMS is the free GUI tool you'll use to write queries, manage databases, and explore your data.",
+        subsections: [
+          {
+            title: "SSMS Install Steps",
+            numbered: [
+              "Visit https://aka.ms/ssmsfullsetup",
+              "Run the SSMS installer",
+              "Accept defaults and click **Install**",
+              "Restart your computer when prompted",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Step 3: Connect to SQL Server",
+        content: "Once SSMS is installed, connect to your local SQL Server instance.",
+        subsections: [
+          {
+            title: "Connection Steps",
+            numbered: [
+              "Open SQL Server Management Studio",
+              'In the **Connect to Server** dialog, set Server type: **Database Engine**',
+              'Set Server name to: `.` or `localhost` or `(local)` or `YOUR-PC-NAME\\SQLEXPRESS`',
+              'Set Authentication to: **Windows Authentication**',
+              "Click **Connect**",
+              "You should now see your server in Object Explorer on the left panel ✅",
+            ],
+          },
+          {
+            title: "Troubleshooting Tips",
+            bullets: [
+              "If connection fails, ensure SQL Server service is running (check Windows Services)",
+              'Open SQL Server Configuration Manager → SQL Server Services → right-click your instance → **Start**',
+              "For named instances (e.g., SQLEXPRESS), use `localhost\\SQLEXPRESS` as server name",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "Create Database, Table & Insert Data",
+    icon: "🏗️",
+    sections: [
+      {
+        heading: "Creating a Database",
+        content: "A database is a container that holds tables, views, stored procedures, and other objects. Let's create one using T-SQL.",
+        subsections: [
+          {
+            title: "Syntax",
+            code: `-- Create a new database
+CREATE DATABASE CompanyDB;
+
+-- Switch to the new database
+USE CompanyDB;
+
+-- Verify current database
+SELECT DB_NAME() AS CurrentDatabase;`,
+          },
+          {
+            title: "Key Notes",
+            bullets: [
+              "Database names are case-insensitive in SQL Server by default",
+              "Use USE DatabaseName to switch between databases",
+              "Always run USE before creating tables to ensure you're in the right database",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Creating a Table",
+        content: "A table stores data in rows and columns. Each column has a name and a data type.",
+        subsections: [
+          {
+            title: "Common SQL Server Data Types",
+            table: {
+              headers: ["Data Type", "Description", "Example"],
+              rows: [
+                ["INT", "Whole numbers", "1, 42, -7"],
+                ["VARCHAR(n)", "Variable-length text", "'John', 'New York'"],
+                ["NVARCHAR(n)", "Unicode variable-length text", "'José', '東京'"],
+                ["DECIMAL(p,s)", "Exact numeric with decimals", "12345.67"],
+                ["FLOAT", "Approximate floating point", "3.14159"],
+                ["DATE", "Date only (no time)", "2024-01-15"],
+                ["DATETIME", "Date + Time", "2024-01-15 10:30:00"],
+                ["BIT", "Boolean (0 or 1)", "1 (true), 0 (false)"],
+              ],
+            },
+          },
+          {
+            title: "Create Table Example",
+            code: `USE CompanyDB;
+
+-- Create an Employees table
+CREATE TABLE Employees (
+    EmployeeID   INT           PRIMARY KEY IDENTITY(1,1),
+    FirstName    VARCHAR(50)   NOT NULL,
+    LastName     VARCHAR(50)   NOT NULL,
+    Email        VARCHAR(100)  UNIQUE NOT NULL,
+    Department   VARCHAR(50),
+    Salary       DECIMAL(10,2) DEFAULT 0.00,
+    HireDate     DATE          NOT NULL,
+    IsActive     BIT           DEFAULT 1
+);`,
+          },
+          {
+            title: "Understanding Constraints",
+            bullets: [
+              "**PRIMARY KEY** — Uniquely identifies each row; cannot be NULL",
+              "**IDENTITY(1,1)** — Auto-increments the value starting at 1, stepping by 1",
+              "**NOT NULL** — The column must always have a value",
+              "**UNIQUE** — All values in the column must be different",
+              "**DEFAULT** — Value used when none is provided on insert",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Inserting Data",
+        content: "The INSERT INTO statement adds new rows to a table.",
+        subsections: [
+          {
+            title: "Basic INSERT Syntax",
+            code: `-- Insert a single row
+INSERT INTO Employees (FirstName, LastName, Email, Department, Salary, HireDate)
+VALUES ('Alice', 'Johnson', 'alice@company.com', 'Engineering', 85000.00, '2022-03-15');
+
+-- Insert multiple rows at once
+INSERT INTO Employees (FirstName, LastName, Email, Department, Salary, HireDate)
+VALUES 
+    ('Bob',    'Smith',   'bob@company.com',    'Marketing',   62000.00, '2021-07-01'),
+    ('Carol',  'White',   'carol@company.com',  'Engineering', 92000.00, '2020-11-20'),
+    ('David',  'Brown',   'david@company.com',  'HR',          55000.00, '2023-01-10'),
+    ('Emma',   'Davis',   'emma@company.com',   'Marketing',   67000.00, '2022-09-05'),
+    ('Frank',  'Wilson',  'frank@company.com',  'Engineering', 78000.00, '2021-04-18');`,
+          },
+          {
+            title: "Verify Inserted Data",
+            code: `-- View all data in the table
+SELECT * FROM Employees;`,
+          },
+          {
+            title: "Insert Best Practices",
+            bullets: [
+              "Always specify column names explicitly — don't rely on column order",
+              "Omit IDENTITY columns — SQL Server fills them automatically",
+              "Use single quotes for text and date values",
+              "Inserting multiple rows in one statement is faster than multiple INSERT statements",
+            ],
+          },
+        ],
+      },
+      {
+        heading: "Modifying & Dropping Objects",
+        content: "Sometimes you need to change table structure or remove objects.",
+        subsections: [
+          {
+            title: "ALTER and DROP Examples",
+            code: `-- Add a new column
+ALTER TABLE Employees ADD PhoneNumber VARCHAR(20);
+
+-- Modify a column's data type
+ALTER TABLE Employees ALTER COLUMN PhoneNumber VARCHAR(15);
+
+-- Drop a column
+ALTER TABLE Employees DROP COLUMN PhoneNumber;
+
+-- Drop the entire table (careful — data is lost!)
+-- DROP TABLE Employees;
+
+-- Drop the database (careful — everything inside is lost!)
+-- DROP DATABASE CompanyDB;`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "SELECT Query in Detail",
+    icon: "🔍",
+    sections: [
+      {
+        heading: "Basic SELECT Syntax",
+        content: "SELECT is the most used SQL command. It retrieves data from one or more tables.",
+        subsections: [
+          {
+            title: "Full SELECT Clause Order",
+            code: `SELECT   [columns]
+FROM     [table]
+WHERE    [filter conditions]
+GROUP BY [grouping columns]
+HAVING   [filter on aggregates]
+ORDER BY [sort columns]`,
+          },
+          {
+            title: "Simple Examples",
+            code: `-- Select all columns
+SELECT * FROM Employees;
+
+-- Select specific columns
+SELECT FirstName, LastName, Department FROM Employees;
+
+-- Select with alias (rename columns in output)
+SELECT 
+    FirstName AS [First Name],
+    LastName  AS [Last Name],
+    Salary    AS [Annual Salary]
+FROM Employees;`,
+          },
+        ],
+      },
+      {
+        heading: "WHERE Clause — Filtering Data",
+        content: "The WHERE clause filters rows based on conditions.",
+        subsections: [
+          {
+            title: "Comparison & Logical Operators",
+            table: {
+              headers: ["Operator", "Meaning", "Example"],
+              rows: [
+                ["=", "Equal to", "Department = 'Engineering'"],
+                ["<> or !=", "Not equal to", "Department <> 'HR'"],
+                [">  <  >=  <=", "Comparison", "Salary > 70000"],
+                ["AND", "Both conditions true", "Dept = 'Eng' AND Salary > 80000"],
+                ["OR", "Either condition true", "Dept = 'HR' OR Dept = 'Marketing'"],
+                ["NOT", "Negates condition", "NOT Department = 'HR'"],
+                ["BETWEEN", "Within a range (inclusive)", "Salary BETWEEN 60000 AND 90000"],
+                ["IN", "Matches a list of values", "Department IN ('HR', 'Marketing')"],
+                ["LIKE", "Pattern matching", "FirstName LIKE 'A%'"],
+                ["IS NULL", "Checks for NULL", "Department IS NULL"],
+              ],
+            },
+          },
+          {
+            title: "WHERE Examples",
+            code: `-- Employees in Engineering
+SELECT * FROM Employees WHERE Department = 'Engineering';
+
+-- Salary between 60k and 90k
+SELECT FirstName, LastName, Salary 
+FROM Employees 
+WHERE Salary BETWEEN 60000 AND 90000;
+
+-- Name starts with 'A' or 'B'
+SELECT * FROM Employees WHERE FirstName LIKE 'A%' OR FirstName LIKE 'B%';
+
+-- Multiple departments using IN
+SELECT * FROM Employees WHERE Department IN ('Engineering', 'Marketing');
+
+-- Active employees hired after 2022
+SELECT * FROM Employees 
+WHERE IsActive = 1 AND HireDate > '2022-01-01';`,
+          },
+          {
+            title: "LIKE Pattern Characters",
+            table: {
+              headers: ["Pattern", "Meaning", "Example"],
+              rows: [
+                ["%", "Any sequence of characters", "LIKE 'A%' → starts with A"],
+                ["_", "Any single character", "LIKE '_ob' → Bob, Rob, Job"],
+                ["[abc]", "Any one of the listed chars", "LIKE '[AE]mma' → Amma or Emma"],
+                ["[a-z]", "Any char in range", "LIKE '[A-C]%' → starts with A, B, or C"],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        heading: "ORDER BY — Sorting Results",
+        content: "ORDER BY sorts the result set. Default is ASC (ascending). Use DESC for descending.",
+        subsections: [
+          {
+            title: "ORDER BY Examples",
+            code: `-- Sort by salary descending (highest first)
+SELECT FirstName, LastName, Salary 
+FROM Employees 
+ORDER BY Salary DESC;
+
+-- Sort by department, then by last name
+SELECT FirstName, LastName, Department 
+FROM Employees 
+ORDER BY Department ASC, LastName ASC;
+
+-- Order by column position (2nd and 3rd column)
+SELECT FirstName, LastName, Salary 
+FROM Employees 
+ORDER BY 3 DESC, 2 ASC;`,
+          },
+        ],
+      },
+      {
+        heading: "Aggregate Functions",
+        content: "Aggregate functions perform calculations on a set of rows and return a single value.",
+        subsections: [
+          {
+            title: "Common Aggregate Functions",
+            table: {
+              headers: ["Function", "Description", "Example"],
+              rows: [
+                ["COUNT()", "Counts rows", "COUNT(*) or COUNT(column)"],
+                ["SUM()", "Total of values", "SUM(Salary)"],
+                ["AVG()", "Average of values", "AVG(Salary)"],
+                ["MIN()", "Lowest value", "MIN(Salary)"],
+                ["MAX()", "Highest value", "MAX(Salary)"],
+              ],
+            },
+          },
+          {
+            title: "Aggregate Examples",
+            code: `-- Total number of employees
+SELECT COUNT(*) AS TotalEmployees FROM Employees;
+
+-- Average, min, max salary
+SELECT 
+    AVG(Salary) AS AvgSalary,
+    MIN(Salary) AS MinSalary,
+    MAX(Salary) AS MaxSalary
+FROM Employees;
+
+-- Count only active employees
+SELECT COUNT(*) AS ActiveEmployees 
+FROM Employees WHERE IsActive = 1;`,
+          },
+        ],
+      },
+      {
+        heading: "GROUP BY & HAVING",
+        content: "GROUP BY groups rows sharing a value, so aggregates apply per group. HAVING filters those groups.",
+        subsections: [
+          {
+            title: "GROUP BY Examples",
+            code: `-- Count employees per department
+SELECT Department, COUNT(*) AS EmployeeCount
+FROM Employees
+GROUP BY Department;
+
+-- Average salary per department
+SELECT 
+    Department,
+    COUNT(*)        AS HeadCount,
+    AVG(Salary)     AS AvgSalary,
+    SUM(Salary)     AS TotalPayroll
+FROM Employees
+GROUP BY Department
+ORDER BY TotalPayroll DESC;
+
+-- HAVING: show departments with avg salary above 70k
+SELECT Department, AVG(Salary) AS AvgSalary
+FROM Employees
+GROUP BY Department
+HAVING AVG(Salary) > 70000;`,
+          },
+          {
+            title: "WHERE vs HAVING",
+            bullets: [
+              "**WHERE** filters rows *before* grouping — works on individual row values",
+              "**HAVING** filters groups *after* grouping — works on aggregate results",
+              "You can use both in the same query: WHERE first, then GROUP BY, then HAVING",
+            ],
+          },
+          {
+            title: "Combined Example",
+            code: `-- Active employees only, grouped by dept, only depts with 2+ people
+SELECT 
+    Department,
+    COUNT(*)    AS HeadCount,
+    AVG(Salary) AS AvgSalary
+FROM Employees
+WHERE IsActive = 1                -- filter rows first
+GROUP BY Department               -- then group
+HAVING COUNT(*) >= 2              -- then filter groups
+ORDER BY AvgSalary DESC;`,
+          },
+        ],
+      },
+      {
+        heading: "TOP & DISTINCT",
+        content: "Two useful modifiers that control the shape of your result set.",
+        subsections: [
+          {
+            title: "TOP and DISTINCT Examples",
+            code: `-- Top 3 highest-paid employees
+SELECT TOP 3 FirstName, LastName, Salary 
+FROM Employees 
+ORDER BY Salary DESC;
+
+-- Top 10% of earners
+SELECT TOP 10 PERCENT FirstName, LastName, Salary
+FROM Employees
+ORDER BY Salary DESC;
+
+-- Get unique department names (no duplicates)
+SELECT DISTINCT Department FROM Employees;
+
+-- Count distinct departments
+SELECT COUNT(DISTINCT Department) AS UniqueDepts FROM Employees;`,
+          },
+        ],
+      },
+      {
+        heading: "Useful Built-in Functions",
+        content: "SQL Server provides many functions to transform and format data in your SELECT output.",
+        subsections: [
+          {
+            title: "String Functions",
+            code: `SELECT 
+    UPPER(FirstName)                  AS UpperName,
+    LOWER(LastName)                   AS LowerName,
+    LEN(Email)                        AS EmailLength,
+    CONCAT(FirstName, ' ', LastName)  AS FullName,
+    SUBSTRING(Email, 1, 5)            AS EmailStart,
+    REPLACE(Email, '@company.com', '') AS Username,
+    LTRIM(RTRIM('  hello  '))         AS Trimmed
+FROM Employees;`,
+          },
+          {
+            title: "Date Functions",
+            code: `SELECT 
+    HireDate,
+    YEAR(HireDate)                        AS YearHired,
+    MONTH(HireDate)                       AS MonthHired,
+    DAY(HireDate)                         AS DayHired,
+    GETDATE()                             AS CurrentDateTime,
+    DATEDIFF(YEAR, HireDate, GETDATE())   AS YearsEmployed,
+    DATEADD(YEAR, 1, HireDate)            AS OneYearAnniversary,
+    FORMAT(HireDate, 'MMMM dd, yyyy')     AS FormattedDate
+FROM Employees;`,
+          },
+          {
+            title: "CASE Expression — Conditional Logic",
+            code: `-- Classify employees by salary range
+SELECT 
+    FirstName,
+    LastName,
+    Salary,
+    CASE 
+        WHEN Salary >= 90000 THEN 'Senior'
+        WHEN Salary >= 70000 THEN 'Mid-Level'
+        WHEN Salary >= 50000 THEN 'Junior'
+        ELSE 'Entry'
+    END AS SalaryGrade
+FROM Employees
+ORDER BY Salary DESC;`,
+          },
+          {
+            title: "NULL Handling Functions",
+            code: `-- ISNULL: replace NULL with a default
+SELECT FirstName, ISNULL(Department, 'Unassigned') AS Dept
+FROM Employees;
+
+-- COALESCE: returns first non-NULL value
+SELECT FirstName, COALESCE(Department, 'Unassigned') AS Dept
+FROM Employees;
+
+-- NULLIF: returns NULL if both values are equal
+SELECT NULLIF(Salary, 0) AS NonZeroSalary FROM Employees;`,
+          },
+        ],
+      },
+    ],
+  },
+];
+/* ====================== END OF TOPICS DATA ====================== */
+
+const CodeBlock = ({ code }) => {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <div style={{ position: "relative", marginTop: "12px", marginBottom: "4px" }}>
+      <button
+        onClick={handleCopy}
+        style={{
+          position: "absolute", top: "10px", right: "10px",
+          background: copied ? "#22c55e22" : "#ffffff18",
+          border: `1px solid ${copied ? "#22c55e66" : "#ffffff30"}`,
+          color: copied ? "#22c55e" : "#94a3b8",
+          padding: "3px 10px", borderRadius: "5px",
+          fontSize: "11px", cursor: "pointer", fontFamily: "inherit",
+          transition: "all 0.2s",
+        }}
+      >{copied ? "✓ Copied" : "Copy"}</button>
+      <pre style={{
+        background: "#0d1117",
+        border: "1px solid #30363d",
+        borderRadius: "8px",
+        padding: "16px",
+        overflowX: "auto",
+        margin: 0,
+        fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+        fontSize: "13px",
+        lineHeight: "1.7",
+        color: "#e6edf3",
+      }}>
+        <code dangerouslySetInnerHTML={{
+          __html: code
+            .replace(/--[^\n]*/g, m => `<span style="color:#8b949e">${m}</span>`)
+            .replace(/\b(SELECT|FROM|WHERE|INSERT|INTO|VALUES|CREATE|DATABASE|TABLE|USE|DROP|ALTER|UPDATE|DELETE|ORDER|GROUP|BY|HAVING|AND|OR|NOT|IN|LIKE|BETWEEN|AS|TOP|DISTINCT|IS|NULL|CASE|WHEN|THEN|ELSE|END|PERCENT|UNIQUE|DEFAULT|PRIMARY|KEY|IDENTITY|REFERENCES|ON|JOIN|INNER|LEFT|RIGHT|FULL|OUTER|CROSS|SET|ADD|COLUMN|CONSTRAINT|ASC|DESC|WITH)\b/g,
+              m => `<span style="color:#ff7b72">${m}</span>`)
+            .replace(/\b(INT|VARCHAR|NVARCHAR|DECIMAL|FLOAT|DATE|DATETIME|BIT|CHAR|BIGINT|SMALLINT|TINYINT|MONEY|TEXT|NTEXT|IMAGE|VARBINARY)\b/g,
+              m => `<span style="color:#79c0ff">${m}</span>`)
+            .replace(/\b(COUNT|SUM|AVG|MIN|MAX|UPPER|LOWER|LEN|CONCAT|SUBSTRING|REPLACE|LTRIM|RTRIM|YEAR|MONTH|DAY|GETDATE|DATEDIFF|DATEADD|FORMAT|ISNULL|COALESCE|NULLIF|DB_NAME)\b/g,
+              m => `<span style="color:#d2a8ff">${m}</span>`)
+            .replace(/'[^']*'/g, m => `<span style="color:#a5d6ff">${m}</span>`)
+            .replace(/\b(\d+(\.\d+)?)\b/g, m => `<span style="color:#79c0ff">${m}</span>`)
+        }} />
+      </pre>
+    </div>
+  );
+};
+
+const DataTable = ({ headers, rows }) => (
+  <div style={{ overflowX: "auto", marginTop: "12px" }}>
+    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13.5px" }}>
+      <thead>
+        <tr>
+          {headers.map((h, i) => (
+            <th key={i} style={{
+              background: "#1e293b", color: "#94a3b8",
+              padding: "9px 14px", textAlign: "left",
+              fontWeight: "600", fontSize: "12px",
+              textTransform: "uppercase", letterSpacing: "0.05em",
+              border: "1px solid #334155",
+              borderTop: "2px solid #3b82f6",
+            }}>{h}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, ri) => (
+          <tr key={ri} style={{ background: ri % 2 === 0 ? "#0f172a" : "#111827" }}>
+            {row.map((cell, ci) => (
+              <td key={ci} style={{
+                padding: "9px 14px", border: "1px solid #1e293b",
+                color: ci === 0 ? "#e2e8f0" : "#94a3b8",
+                fontFamily: ci === 0 ? "'JetBrains Mono', monospace" : "inherit",
+                fontSize: ci === 0 ? "12.5px" : "13.5px",
+              }}>{cell}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+const renderBullet = (text) => {
+  const parts = text.split(/\*\*(.*?)\*\*/g);
+  return parts.map((p, i) => i % 2 === 1 ? <strong key={i} style={{ color: "#e2e8f0" }}>{p}</strong> : p);
+};
+
+function App() {
+  const [activeModule, setActiveModule] = useState(0);
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (key) => {
+    setExpandedSections(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const module = course[activeModule];
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#060b14",
+      fontFamily: "'IBM Plex Sans', 'Segoe UI', sans-serif",
+      color: "#cbd5e1",
+      display: "flex",
+      flexDirection: "column",
+    }}>
+      <div style={{
+        background: "linear-gradient(135deg, #0c1929 0%, #0f2644 50%, #071520 100%)",
+        borderBottom: "1px solid #1e3a5f",
+      }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "28px 24px 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "6px" }}>
+            <div style={{
+              background: "linear-gradient(135deg, #cc0000, #ff4444)",
+              borderRadius: "10px", padding: "8px 12px",
+              fontSize: "22px", lineHeight: 1,
+            }}>🗃️</div>
+            <div>
+              <div style={{ fontSize: "11px", color: "#3b82f6", fontWeight: "600", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "3px" }}>
+                Complete Course
+              </div>
+              <h1 style={{ margin: 0, fontSize: "24px", fontWeight: "700", color: "#f1f5f9", lineHeight: 1.2 }}>
+                Microsoft SQL Server
+              </h1>
+            </div>
+          </div>
+          <p style={{ margin: "10px 0 0 0", color: "#64748b", fontSize: "14px" }}>
+            From zero to writing confident SQL queries — with real examples and explanations.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", gap: "0", overflowX: "auto", padding: "0 24px", maxWidth: "1100px", margin: "0 auto" }}>
+          {course.map((m, i) => (
+            <button
+              key={i}
+              className={`module-btn${activeModule === i ? " active" : ""}`}
+              onClick={() => setActiveModule(i)}
+              style={{
+                background: activeModule === i ? "#1d3461" : "transparent",
+                border: "none",
+                borderBottom: activeModule === i ? "2px solid #3b82f6" : "2px solid transparent",
+                color: activeModule === i ? "#93c5fd" : "#64748b",
+                padding: "12px 18px 14px",
+                cursor: "pointer",
+                fontSize: "13px",
+                fontWeight: activeModule === i ? "600" : "400",
+                whiteSpace: "nowrap",
+                transition: "all 0.2s",
+                fontFamily: "inherit",
+                display: "flex", alignItems: "center", gap: "7px",
+              }}
+            >
+              <span>{m.icon}</span>
+              {m.title}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ maxWidth: "1100px", margin: "0 auto", width: "100%", padding: "32px 24px 60px" }}>
+        <div style={{ marginBottom: "28px", display: "flex", alignItems: "center", gap: "12px" }}>
+          <span style={{
+            background: "#1d3461", color: "#3b82f6",
+            fontSize: "11px", fontWeight: "700", padding: "4px 10px",
+            borderRadius: "20px", letterSpacing: "0.08em", textTransform: "uppercase",
+          }}>Module {module.id}</span>
+          <h2 style={{ margin: 0, fontSize: "22px", fontWeight: "700", color: "#f1f5f9" }}>
+            {module.icon} {module.title}
+          </h2>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {module.sections.map((section, si) => {
+            const key = `${activeModule}-${si}`;
+            const isOpen = expandedSections[key] !== false;
+            return (
+              <div key={si} style={{
+                background: "#0c1524",
+                border: "1px solid #1e293b",
+                borderRadius: "12px",
+                overflow: "hidden",
+              }}>
+                <button
+                  className="section-toggle"
+                  onClick={() => toggleSection(key)}
+                  style={{
+                    width: "100%", textAlign: "left", background: "transparent",
+                    border: "none", cursor: "pointer", padding: "18px 22px",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    color: "#e2e8f0", fontFamily: "inherit",
+                    borderBottom: isOpen ? "1px solid #1e293b" : "none",
+                    transition: "background 0.15s",
+                  }}
+                >
+                  <span style={{ fontSize: "16px", fontWeight: "600", display: "flex", alignItems: "center", gap: "10px" }}>
+                    <span style={{
+                      background: "#1d3461", color: "#60a5fa",
+                      width: "26px", height: "26px", borderRadius: "6px",
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "12px", fontWeight: "700", flexShrink: 0,
+                    }}>{si + 1}</span>
+                    {section.heading}
+                  </span>
+                  <span style={{ color: "#475569", fontSize: "18px", transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▾</span>
+                </button>
+
+                {isOpen && (
+                  <div style={{ padding: "20px 22px 22px" }}>
+                    {section.content && (
+                      <p style={{ margin: "0 0 18px 0", lineHeight: "1.75", color: "#94a3b8", fontSize: "14.5px" }}>
+                        {section.content}
+                      </p>
+                    )}
+
+                    {section.subsections && section.subsections.map((sub, ssi) => (
+                      <div key={ssi} style={{ marginBottom: ssi < section.subsections.length - 1 ? "22px" : "0" }}>
+                        <h4 style={{
+                          margin: "0 0 10px 0", fontSize: "13px",
+                          fontWeight: "600", color: "#60a5fa",
+                          textTransform: "uppercase", letterSpacing: "0.08em",
+                          display: "flex", alignItems: "center", gap: "8px",
+                        }}>
+                          <span style={{ width: "3px", height: "14px", background: "#3b82f6", borderRadius: "2px", display: "inline-block" }} />
+                          {sub.title}
+                        </h4>
+
+                        {sub.code && <CodeBlock code={sub.code} />}
+                        {sub.table && <DataTable headers={sub.table.headers} rows={sub.table.rows} />}
+
+                        {sub.bullets && (
+                          <ul style={{ margin: "8px 0 0 0", padding: "0", listStyle: "none" }}>
+                            {sub.bullets.map((b, bi) => (
+                              <li key={bi} style={{
+                                padding: "6px 0 6px 20px",
+                                position: "relative",
+                                color: "#94a3b8",
+                                fontSize: "14px",
+                                lineHeight: "1.65",
+                                borderBottom: bi < sub.bullets.length - 1 ? "1px solid #0f1a2e" : "none",
+                              }}>
+                                <span style={{
+                                  position: "absolute", left: "0", top: "11px",
+                                  width: "6px", height: "6px", borderRadius: "50%",
+                                  background: "#3b82f6", display: "inline-block",
+                                }} />
+                                {renderBullet(b)}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+
+                        {sub.numbered && (
+                          <ol style={{ margin: "8px 0 0 0", padding: "0 0 0 22px" }}>
+                            {sub.numbered.map((n, ni) => (
+                              <li key={ni} style={{
+                                padding: "5px 0",
+                                color: "#94a3b8",
+                                fontSize: "14px",
+                                lineHeight: "1.65",
+                              }}>
+                                {renderBullet(n)}
+                              </li>
+                            ))}
+                          </ol>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "32px" }}>
+          <button
+            onClick={() => setActiveModule(m => Math.max(0, m - 1))}
+            disabled={activeModule === 0}
+            style={{
+              background: activeModule === 0 ? "#0c1524" : "#1e293b",
+              border: "1px solid #1e293b",
+              color: activeModule === 0 ? "#334155" : "#94a3b8",
+              padding: "10px 20px", borderRadius: "8px",
+              cursor: activeModule === 0 ? "not-allowed" : "pointer",
+              fontSize: "13px", fontFamily: "inherit",
+            }}
+          >← Previous Module</button>
+          <div style={{ color: "#334155", fontSize: "13px", display: "flex", alignItems: "center" }}>
+            {activeModule + 1} / {course.length}
+          </div>
+          <button
+            onClick={() => setActiveModule(m => Math.min(course.length - 1, m + 1))}
+            disabled={activeModule === course.length - 1}
+            style={{
+              background: activeModule === course.length - 1 ? "#0c1524" : "#1d3461",
+              border: `1px solid ${activeModule === course.length - 1 ? "#1e293b" : "#3b82f6"}`,
+              color: activeModule === course.length - 1 ? "#334155" : "#93c5fd",
+              padding: "10px 20px", borderRadius: "8px",
+              cursor: activeModule === course.length - 1 ? "not-allowed" : "pointer",
+              fontSize: "13px", fontFamily: "inherit",
+            }}
+          >Next Module →</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
