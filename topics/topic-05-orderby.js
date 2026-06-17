@@ -56,5 +56,59 @@ ORDER BY 3 DESC, 2 ASC;`,
         },
       ],
     },
+    {
+      heading: "Practice Questions: ORDER BY",
+      content: "Continuing with the Books table — write a query for each scenario below.",
+      subsections: [
+        {
+          title: "Q1. Sort all books by Price in descending order (highest price first), showing all columns.",
+          answer: `SELECT * 
+    FROM Books 
+    ORDER BY Price DESC;`,
+        },
+        {
+          title: "Q2. Sort books by Price in descending order, showing only Title, Author, and Price.",
+          answer: `SELECT Title, Author, Price 
+    FROM Books 
+    ORDER BY Price DESC;`,
+        },
+        {
+          title: "Q3. Sort books by Price in ascending order (lowest price first), showing only Title and Price.",
+          answer: `SELECT Title, Price 
+    FROM Books 
+    ORDER BY Price ASC;`,
+        },
+        {
+          title: "Q4. Sort all books alphabetically by Title (A to Z), showing all columns.",
+          answer: `SELECT * 
+    FROM Books 
+    ORDER BY Title ASC;`,
+        },
+        {
+          title: "Q5. Display BookID, Title, and PublishedDate, sorted to show the oldest published book first.",
+          answer: `SELECT BookID, Title, PublishedDate 
+    FROM Books 
+    ORDER BY PublishedDate ASC;`,
+        },
+        {
+          title: "Q6. Display BookID, Price, and PublishedDate, sorted so the most recently published book appears on top.",
+          answer: `SELECT BookID, Price, PublishedDate 
+    FROM Books 
+    ORDER BY PublishedDate DESC;`,
+        },
+        {
+          title: "Q7. Sort books first by Genre (A–Z), and within each genre, sort by Title (A–Z). Show Title, Genre, and Author.",
+          answer: `SELECT Title, Genre, Author 
+    FROM Books 
+    ORDER BY Genre ASC, Title ASC;`,
+        },
+        {
+          title: "Q8. Using column position instead of column name, display Title, Author, and Price — sorted by the 3rd column descending, then the 2nd column ascending.",
+          answer: `SELECT Title, Author, Price 
+    FROM Books 
+    ORDER BY 3 DESC, 2 ASC;`,
+        },
+      ],
+    },
   ],
 }
