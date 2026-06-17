@@ -144,10 +144,6 @@ ALTER TABLE Employees DROP COLUMN PhoneNumber;
         },
         {
           title: "Q3. Create a table called Books with the following columns:",
-          answer: `USE LibraryDB;`,
-        },
-        {
-          title: "Q3. Display Title and Price, renaming Price to 'Book Price' in the output.",
           bullets: [
             "**BookID**: auto-incrementing primary key",
             "**Title**: text, up to 100 characters, required",
@@ -157,6 +153,10 @@ ALTER TABLE Employees DROP COLUMN PhoneNumber;
             "**PublishedDate**: date",
             "**IsAvailable**: bit, defaults to 1",
           ],
+          answer: `USE LibraryDB;`,
+        },
+        {
+          title: "Q3. Display Title and Price, renaming Price to 'Book Price' in the output.",
           answer: `CREATE TABLE Books (
     BookID         INT           PRIMARY KEY IDENTITY(1,1),
     Title          VARCHAR(100)  NOT NULL,
