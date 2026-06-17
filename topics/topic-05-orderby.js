@@ -19,6 +19,21 @@ SELECT FirstName, LastName, Salary
 FROM Employees 
 ORDER BY Salary DESC;
 
+-- Sort by salary ascending (lowest first) - selecting only few columns
+SELECT FirstName, LastName, Salary 
+FROM Employees 
+ORDER BY Salary ASC;
+
+-- Sort by LastName ascending (lowest first) - selecting all columns
+SELECT * 
+FROM Employees 
+ORDER BY LastName ASC;
+
+-- Sort by data in hiring order - display who got hired first - selecting only few columns
+SELECT EmployeeID, Email, Hiredate 
+FROM Employees 
+ORDER BY Hiredate ASC;
+
 -- Sort by department, then by last name
 SELECT FirstName, LastName, Department 
 FROM Employees 
