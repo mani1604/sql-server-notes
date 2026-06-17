@@ -28,36 +28,33 @@
 const { useState, useEffect } = React;
 
 /* ============================================================
-   CONFIG — set these once. They tell the page where to find
-   your topic files (in the "topics" folder of this repo).
+   Topics are listed in topics-manifest.json (at the repo root).
+   That file is just an array of filenames, e.g.:
+   ["topic-01-intro.js", "topic-02-install.js"]
+   The order in that array is the order tabs appear in.
+   Everything is fetched as a relative path, so this works
+   straight out of the box on GitHub Pages — no username/repo
+   config needed, and no API rate limits.
    ============================================================ */
-const GITHUB_USER = "mani1604";
-const GITHUB_REPO  = "sql-server-notes";
-const TOPICS_PATH  = "topics";         // folder name in your repo
-
-/* Fetches every .js file in /topics, runs it, and collects
-   the topic object each file contains. Files are sorted by
-   filename, so naming them 01-..., 02-... controls order. */
 async function loadTopics() {
-  const listUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${TOPICS_PATH}`;
-  const listRes = await fetch(listUrl);
-  if (!listRes.ok) {
-    throw new Error("Could not read the topics folder. Check GITHUB_USER / GITHUB_REPO and that the 'topics' folder exists.");
+  const manifestRes = await fetch("topics-manifest.json");
+  if (!manifestRes.ok) {
+    throw new Error("Could not load topics-manifest.json. Make sure it exists at the repo root.");
   }
-  const files = await listRes.json();
-  const jsFiles = files
-    .filter(f => f.name.endsWith(".js"))
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const filenames = await manifestRes.json();
 
   const topics = await Promise.all(
-    jsFiles.map(async (f) => {
-      const raw = await fetch(f.download_url);
-      const text = await raw.text();
+    filenames.map(async (name) => {
+      const res = await fetch(`topics/${name}`);
+      if (!res.ok) {
+        throw new Error(`Could not load topics/${name}`);
+      }
+      const text = await res.text();
       try {
         // eslint-disable-next-line no-eval
         return eval("(" + text + ")");
       } catch (e) {
-        throw new Error(`Could not parse ${f.name}: ${e.message}`);
+        throw new Error(`Could not parse topics/${name}: ${e.message}`);
       }
     })
   );
